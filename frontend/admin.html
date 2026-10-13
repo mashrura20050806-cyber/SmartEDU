@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SmartEDU - Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h2>SmartEDU</h2>
+  </header>
+
+  <main>
+    <h1>Admin Dashboard</h1>
+     <h2>Add a notice</h2>
+    <input type="text" id="newTitle" placeholder="Notice title">
+    <button onclick="addNotice()">Add notice</button>
+    <h2>Latest notices</h2>
+    <div id="noticeList">
+      <div class="notice">
+        <p>Exam routine published</p>
+        <button onclick="editNotice(this)">Edit</button>
+      </div>
+      <div class="notice">
+        <p>School closed on Friday</p>
+        <button onclick="editNotice(this)">Edit</button>
+      </div>
+    </div>
+    <h2>All classes and sections</h2>
+    <table>
+      <tr><th>Class</th><th>Section</th><th>Class Teacher</th><th>Students</th></tr>
+      <tr><td>Class 8</td><td>A</td><td>Teacher 1</td><td>35</td></tr>
+      <tr><td>Class 8</td><td>B</td><td>Teacher 2</td><td>32</td></tr>
+      <tr><td>Class 9</td><td>A</td><td>Teacher 3</td><td>38</td></tr>
+    </table>
+    <h2>Manage the school</h2>
+    <div class="links">
+      <a href="#">Manage users</a>
+      <a href="#">Manage classes and sections</a>
+      <a href="#">Manage subjects</a>
+      <a href="#">Assign teachers</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>SmartEDU</p>
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
