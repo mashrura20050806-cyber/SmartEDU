@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Smart Edu School Academic Management System"><title>Smart Edu | Class Tasks - Class Teacher</title>
+<link rel="stylesheet" href="css/style.css"><script src="js/script.js" defer></script></head>
+<body data-role="classTeacher" data-page="tasks">
+<header class="topbar"><div><h1>Smart Edu</h1><p>School Academic Management System</p></div>
+<div class="role-box"><label for="roleSelect">Current Role</label><select id="roleSelect">
+<option value="student" >Student</option><option value="classTeacher" selected>Class Teacher</option><option value="assistant" >Assistant</option>
+</select></div></header>
+<div class="layout"><aside class="sidebar"><h3>MENU</h3><nav aria-label="Main navigation"><a class="nav-link " href="classTeacherDashboard.html">Dashboard</a><a class="nav-link " href="classTeacherNotices.html">School Notices</a><a class="nav-link active" href="classTeacherTasks.html">Class Tasks</a><a class="nav-link " href="classTeacherMaterials.html">Study Materials</a><a class="nav-link " href="classTeacherMarks.html">Marks & Results</a></nav></aside>
+<main class="main-content"><h2>Class Tasks</h2><p class="subtitle">View class tasks and academic assignments.</p><section class="panel"><h3>Add a Class Task</h3><form id="taskForm"><label for="taskTitle">Task Title</label><input id="taskTitle" maxlength="100" placeholder="Example: English Homework" required><label for="taskFile">Choose PDF or Image</label><input id="taskFile" type="file" accept=".pdf,application/pdf,image/*" required><button class="primary-btn" type="submit">Add Task</button><p id="taskMessage" class="message" role="status"></p></form></section><section class="panel"><h3>Task List</h3><ul id="taskList"><li>Mathematics Homework — Demo task</li><li>English Paragraph — Demo task</li></ul></section></main></div>
+<footer><p>Smart Edu | Academic Management System</p></footer></body></html>
