@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SmartEDU - Notice</title>
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  <header>SmartEDU</header>
+
+  <main style="padding:24px">
+    <h1>Notice Board</h1>
+
+    <div class="card" style="margin-bottom:20px">
+      <label for="role"><b>Demo Role:</b></label>
+      <select id="role" style="margin:8px 0">
+        <option>Class Teacher</option>
+        <option>Assistant</option>
+        <option>Student</option>
+      </select>
+      <div id="studentProfile" style="display:none">
+        <input id="stClass" placeholder="Student class (e.g. 8)" value="8" style="margin-bottom:8px">
+        <input id="stSection" placeholder="Student section (e.g. A)" value="A" style="margin-bottom:8px">
+        <input id="stId" placeholder="Student ID (e.g. S-101)" value="S-101">
+      </div>
+    </div>
+
+    <section id="formBox">
+      <h2>Add New Notice</h2>
+      <input type="text" id="title" placeholder="Notice title">
+      <textarea id="details" rows="3" placeholder="Details" style="margin-top:10px"></textarea>
+
+      <select id="audience" style="margin-top:10px">
+        <option value="school">Entire School</option>
+        <option value="class">Specific Class</option>
+        <option value="section">Specific Section</option>
+        <option value="student">Individual Student</option>
+      </select>
+      <input id="tClass" placeholder="Class (e.g. 8)" style="margin-top:10px;display:none">
+      <input id="tSection" placeholder="Section (e.g. A)" style="margin-top:10px;display:none">
+      <input id="tStudent" placeholder="Student ID (e.g. S-101)" style="margin-top:10px;display:none">
+
+      <p id="error" style="color:#B00020"></p>
+      <button id="addBtn">Add Notice</button>
+    </section>
+
+    <h2 style="margin-top:24px">Notices</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Title</th><th>Details</th><th>Audience</th><th>Date</th><th>Posted By</th></tr>
+        </thead>
+        <tbody id="noticeList"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer>© 2026 SmartEDU</footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
