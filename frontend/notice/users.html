@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Users - SmartEdu</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header" id="site-header"></header>
+
+  <main class="page">
+    <h1>Users</h1>
+    <p class="lead">Create accounts and see everyone who can use SmartEdu.</p>
+
+    <section class="page-section" aria-labelledby="create-heading">
+      <h2 id="create-heading">Create user account</h2>
+      <div id="user-alert" role="status" hidden></div>
+
+      <form id="user-form" novalidate>
+        <div class="field">
+          <label for="name">Full name</label>
+          <input id="name" type="text" autocomplete="off">
+          <span class="field-error" id="name-error" aria-live="polite"></span>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" type="email" autocomplete="off">
+          <span class="field-error" id="email-error" aria-live="polite"></span>
+        </div>
+        <div class="field">
+          <label for="role">Role</label>
+          <select id="role">
+            <option value="">Choose a role</option>
+          </select>
+          <span class="field-error" id="role-error" aria-live="polite"></span>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" type="password" autocomplete="new-password">
+          <span class="hint">At least 8 characters, with a letter and a number.</span>
+          <span class="field-error" id="password-error" aria-live="polite"></span>
+        </div>
+        <div class="field">
+          <label for="confirm">Confirm password</label>
+          <input id="confirm" type="password" autocomplete="new-password">
+          <span class="field-error" id="confirm-error" aria-live="polite"></span>
+        </div>
+        <div class="form-actions"><button type="submit">Create account</button></div>
+      </form>
+    </section>
+
+    <section class="page-section" aria-labelledby="list-heading">
+      <h2 id="list-heading">All users</h2>
+      <div class="toolbar">
+        <div class="field">
+          <label for="role-filter">Show role</label>
+          <select id="role-filter">
+            <option value="">All roles</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th scope="col">Name</th><th scope="col">Email</th><th scope="col">Role</th></tr></thead>
+          <tbody id="user-rows"></tbody>
+        </table>
+      </div>
+      <p class="empty" id="user-empty" hidden>No users match this filter. Choose All roles to see everyone.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="footer-inner"><p>SmartEdu school management. Sprint 1 build.</p></div></footer>
+  <script src="js/data.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/users.js"></script>
+</body>
+</html>

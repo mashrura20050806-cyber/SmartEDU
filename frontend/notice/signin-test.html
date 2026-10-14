@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Testing sign-in - SmartEdu</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner"><a class="brand" href="signin-test.html">SmartEdu</a></div>
+  </header>
+
+  <main class="page narrow">
+    <h1>Testing sign-in</h1>
+    <p class="note">This page is only for testing Sprint 1 screens by role. Replace it with the team's real login when it is ready.</p>
+
+    <div id="denied" class="alert alert-error" role="alert" hidden>You do not have access to that page. Sign in with a role that does.</div>
+
+    <form id="signin-form" novalidate>
+      <div class="field">
+        <label for="user-select">Sign in as</label>
+        <select id="user-select"></select>
+      </div>
+      <button type="submit">Sign in</button>
+    </form>
+  </main>
+
+  <footer class="site-footer"><div class="footer-inner"><p>SmartEdu school management. Sprint 1 build.</p></div></footer>
+  <script src="js/data.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/signin-test.js"></script>
+</body>
+</html>
