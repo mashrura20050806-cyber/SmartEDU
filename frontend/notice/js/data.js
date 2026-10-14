@@ -1,16 +1,4 @@
-/* SmartEdu - mock backend (Sprint 1)
- *
- * This file stands in for the real backend and database until the schema owner
- * finishes the tables. Every function returns a Promise, the same way a fetch()
- * call to the real API would. Later, replace the body of each function with a
- * fetch() call and leave the page scripts unchanged.
- *
- * Rules that the real backend must also enforce (never trust the browser):
- *   - only an Admin can create users
- *   - passwords are hashed on the server and never stored in plain text
- *   - only the Principal can approve or reject notices
- *   - Admin and Teacher notices start as "pending"; Principal notices are "approved"
- */
+
 (function () {
   "use strict";
 
