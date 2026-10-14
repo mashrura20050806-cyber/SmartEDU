@@ -10,11 +10,11 @@ const NoticeAPI = {
   }
 };
 
-// ===== রিপোর্ট অনুযায়ী পারমিশন: Notice (Class Teacher, Assistant, Student) =====
+
 const PERMISSIONS = {
-  "Class Teacher": { write: true },   // view/write
-  "Assistant":     { write: true },   // view/write
-  "Student":       { write: false }   // view only
+  "Class Teacher": { write: true },   
+  "Assistant":     { write: true },   
+  "Student":       { write: false }   
 };
 
 const $ = id => document.getElementById(id);
