@@ -1,4 +1,3 @@
-/* Testing sign-in: pick a seeded Admin, Principal or Teacher to try each page. */
 (function () {
   "use strict";
   const UI = window.SmartEduUI;
