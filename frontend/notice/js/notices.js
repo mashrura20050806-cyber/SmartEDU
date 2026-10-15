@@ -1,4 +1,3 @@
-/* Notices for Admin, Principal and Teacher: create, list, and Principal approve / reject. */
 (function () {
   "use strict";
   const UI = window.SmartEduUI;
