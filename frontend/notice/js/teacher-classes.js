@@ -1,4 +1,3 @@
-/* Teacher: view my assigned classes and subjects. */
 (function () {
   "use strict";
   const UI = window.SmartEduUI;
