@@ -1,4 +1,4 @@
-/* Principal: read-only list of classes and sections. */
+
 (function () {
   "use strict";
   const UI = window.SmartEduUI;
