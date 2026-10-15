@@ -96,7 +96,6 @@
     return className + ", Section " + audience.section;
   }
 
-  /* ---------- Users (Admin) ---------- */
 
   async function getUsers(role) {
     const db = load();
