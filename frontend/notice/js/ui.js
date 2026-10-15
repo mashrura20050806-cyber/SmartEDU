@@ -1,4 +1,5 @@
-
+/* SmartEdu - small DOM helpers shared by all pages.
+   Text is always added with textContent, never innerHTML, so user input cannot inject markup. */
 (function () {
   "use strict";
 

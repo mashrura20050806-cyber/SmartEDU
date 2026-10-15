@@ -1,4 +1,10 @@
-
+/* SmartEdu - session and role guard (Sprint 1 testing version)
+ *
+ * Dashboards and the real login belong to other team members. This file keeps a
+ * simple session in sessionStorage so each page can be tested by role.
+ * When the real login exists, replace getSession() with the real session and keep
+ * requireRole() and renderHeader() as they are.
+ */
 (function () {
   "use strict";
 
