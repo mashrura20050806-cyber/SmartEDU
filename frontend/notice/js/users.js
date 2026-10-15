@@ -1,4 +1,3 @@
-/* Admin: create user account form and user list. */
 (function () {
   "use strict";
   const UI = window.SmartEduUI;
