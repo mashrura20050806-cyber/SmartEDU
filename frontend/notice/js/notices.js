@@ -31,7 +31,6 @@
     ? "Notices you post are published straight away."
     : "Your notice goes to the Principal for approval before students can see it.";
 
-  /* ----- audience fields ----- */
   function fillSections() {
     UI.clear(sectionSelect);
     sectionSelect.appendChild(UI.el("option", { value: "", text: "Choose a section" }));
@@ -59,7 +58,6 @@
   classSelect.addEventListener("change", fillSections);
   updateAudienceFields();
 
-  /* ----- create notice ----- */
   function validate() {
     const errors = [];
     if (!title.value.trim()) { errors.push([title, "Enter a title."]); }
@@ -99,7 +97,6 @@
     }).catch((err) => UI.showAlert(formAlert, "error", err.message));
   });
 
-  /* ----- notice list ----- */
   function review(notice, status) {
     UI.hideAlert(listAlert);
     API.setNoticeStatus(session, notice.id, status).then(() => {
