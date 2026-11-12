@@ -1,0 +1,269 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  PRINCIPAL
+  TEACHER
+  CLASS_TEACHER
+  ASSISTANT
+  STUDENT
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  INACTIVE
+}
+
+enum NoticeScope {
+  SCHOOL
+  CLASS
+  SECTION
+  STUDENT
+}
+
+enum FileKind {
+  MATERIAL
+  TASK
+}
+
+model User {
+  id                  String              @id @default(uuid()) @db.Uuid
+  institutionalId     String              @unique @map("institutional_id") @db.VarChar(50)
+  name                String              @db.VarChar(100)
+  email               String              @unique @db.VarChar(254)
+  passwordHash        String              @map("password_hash") @db.VarChar(255)
+  loginCodeHash       String?             @unique @map("login_code_hash") @db.VarChar(255)
+  loginCodeDigest     String?             @unique @map("login_code_digest") @db.Char(64)
+  role                Role                @default(STUDENT)
+  status              UserStatus          @default(PENDING)
+  phone               String?             @db.VarChar(30)
+  guardianPhone       String?             @map("guardian_phone") @db.VarChar(30)
+  rollNumber          String?             @map("roll_number") @db.VarChar(30)
+  photoUrl            String?             @map("photo_url") @db.VarChar(500)
+  sectionId           String?             @map("section_id") @db.Uuid
+  section             Section?            @relation(fields: [sectionId], references: [id], onDelete: SetNull)
+  classTeacherSections Section[]           @relation("SectionClassTeacher")
+  teachingAssignments TeacherAssignment[]
+  termMarks           TermMark[]
+  authoredNotices     Notice[]            @relation("NoticeAuthor")
+  targetedNotices     Notice[]            @relation("NoticeStudent")
+  createdExams        Exam[]              @relation("ExamCreator")
+  marks               Mark[]              @relation("StudentMarks")
+  uploadedFiles       LearningFile[]      @relation("FileUploader")
+  failedLogins        Int                 @default(0) @map("failed_logins")
+  lockedUntil         DateTime?           @map("locked_until")
+  createdAt           DateTime            @default(now()) @map("created_at")
+  updatedAt           DateTime            @updatedAt @map("updated_at")
+
+  @@index([role, status])
+  @@index([sectionId])
+  @@unique([sectionId, rollNumber])
+  @@map("users")
+}
+
+model CodeReservation {
+  id         String   @id @default(uuid()) @db.Uuid
+  role       Role
+  codeHash   String   @map("code_hash") @db.VarChar(255)
+  codeDigest String   @unique @map("code_digest") @db.Char(64)
+  expiresAt  DateTime @map("expires_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([expiresAt])
+  @@map("code_reservations")
+}
+
+model Permission {
+  id        String   @id @default(uuid()) @db.Uuid
+  role      Role
+  module    String   @db.VarChar(50)
+  canView   Boolean  @default(false) @map("can_view")
+  canWrite  Boolean  @default(false) @map("can_write")
+  canModify Boolean  @default(false) @map("can_modify")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([role, module])
+  @@map("permissions")
+}
+
+model SchoolClass {
+  id           String              @id @default(uuid()) @db.Uuid
+  name         String              @db.VarChar(80)
+  grade        Int?
+  academicYear String              @map("academic_year") @db.VarChar(20)
+  sections     Section[]
+  subjects     Subject[]
+  assignments  TeacherAssignment[]
+  notices      Notice[]
+  exams        Exam[]
+  files        LearningFile[]
+  createdAt    DateTime            @default(now()) @map("created_at")
+  updatedAt    DateTime            @updatedAt @map("updated_at")
+
+  @@unique([name, academicYear])
+  @@map("school_classes")
+}
+
+model Section {
+  id              String              @id @default(uuid()) @db.Uuid
+  name            String              @db.VarChar(50)
+  classId         String              @map("class_id") @db.Uuid
+  classTeacherId  String?             @map("class_teacher_id") @db.Uuid
+  schoolClass     SchoolClass         @relation(fields: [classId], references: [id], onDelete: Cascade)
+  students        User[]
+  classTeacher    User?               @relation("SectionClassTeacher", fields: [classTeacherId], references: [id], onDelete: SetNull)
+  assignments     TeacherAssignment[]
+  notices         Notice[]
+  files           LearningFile[]
+  createdAt       DateTime            @default(now()) @map("created_at")
+  updatedAt       DateTime            @updatedAt @map("updated_at")
+
+  @@unique([classId, name])
+  @@map("sections")
+}
+
+model Subject {
+  id          String              @id @default(uuid()) @db.Uuid
+  name        String              @db.VarChar(100)
+  code        String?             @db.VarChar(30)
+  classId     String              @map("class_id") @db.Uuid
+  mt1MaxMarks Float               @default(100) @map("mt1_max_marks")
+  hyMaxMarks  Float               @default(100) @map("hy_max_marks")
+  mt2MaxMarks Float               @default(100) @map("mt2_max_marks")
+  schoolClass SchoolClass         @relation(fields: [classId], references: [id], onDelete: Cascade)
+  assignments TeacherAssignment[]
+  exams       Exam[]
+  termMarks   TermMark[]
+  createdAt   DateTime            @default(now()) @map("created_at")
+  updatedAt   DateTime            @updatedAt @map("updated_at")
+
+  @@unique([classId, name])
+  @@unique([classId, code])
+  @@map("subjects")
+}
+
+model TeacherAssignment {
+  id          String      @id @default(uuid()) @db.Uuid
+  teacherId   String      @map("teacher_id") @db.Uuid
+  classId     String      @map("class_id") @db.Uuid
+  sectionId   String?     @map("section_id") @db.Uuid
+  subjectId   String?     @map("subject_id") @db.Uuid
+  scopeKey    String      @unique @map("scope_key") @db.VarChar(200)
+  teacher     User        @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  schoolClass SchoolClass @relation(fields: [classId], references: [id], onDelete: Cascade)
+  section     Section?    @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  subject     Subject?    @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  @@index([teacherId])
+  @@index([classId, sectionId, subjectId])
+  @@map("teacher_assignments")
+}
+
+model Notice {
+  id             String       @id @default(uuid()) @db.Uuid
+  title          String       @db.VarChar(160)
+  body           String       @db.Text
+  scope          NoticeScope
+  recipientRoles Role[]       @default([]) @map("recipient_roles")
+  classId        String?      @map("class_id") @db.Uuid
+  sectionId      String?      @map("section_id") @db.Uuid
+  studentId      String?      @map("student_id") @db.Uuid
+  authorId       String       @map("author_id") @db.Uuid
+  schoolClass    SchoolClass? @relation(fields: [classId], references: [id], onDelete: Cascade)
+  section        Section?     @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  student        User?        @relation("NoticeStudent", fields: [studentId], references: [id], onDelete: Cascade)
+  author         User         @relation("NoticeAuthor", fields: [authorId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+
+  @@index([scope, classId, sectionId, studentId])
+  @@index([createdAt])
+  @@map("notices")
+}
+
+model Exam {
+  id          String      @id @default(uuid()) @db.Uuid
+  title       String      @db.VarChar(120)
+  classId     String      @map("class_id") @db.Uuid
+  subjectId   String      @map("subject_id") @db.Uuid
+  createdById String      @map("created_by_id") @db.Uuid
+  maxMarks    Float       @map("max_marks")
+  examDate    DateTime    @map("exam_date")
+  schoolClass SchoolClass @relation(fields: [classId], references: [id], onDelete: Cascade)
+  subject     Subject     @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  createdBy   User        @relation("ExamCreator", fields: [createdById], references: [id], onDelete: Cascade)
+  marks       Mark[]
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  @@index([classId, examDate])
+  @@index([subjectId])
+  @@map("exams")
+}
+
+model Mark {
+  id        String   @id @default(uuid()) @db.Uuid
+  examId    String   @map("exam_id") @db.Uuid
+  studentId String   @map("student_id") @db.Uuid
+  score     Float
+  comment   String?  @db.VarChar(500)
+  exam      Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
+  student   User     @relation("StudentMarks", fields: [studentId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([examId, studentId])
+  @@index([studentId, createdAt])
+  @@map("marks")
+}
+
+model TermMark {
+  id           String   @id @default(uuid()) @db.Uuid
+  studentId    String   @map("student_id") @db.Uuid
+  subjectId    String   @map("subject_id") @db.Uuid
+  academicYear String   @map("academic_year") @db.VarChar(20)
+  mt1Mark      Float?   @map("mt1_mark")
+  hyMark       Float?   @map("hy_mark")
+  mt2Mark      Float?   @map("mt2_mark")
+  student      User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  subject      Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@unique([studentId, subjectId, academicYear])
+  @@index([subjectId, academicYear])
+  @@map("term_marks")
+}
+
+model LearningFile {
+  id           String       @id @default(uuid()) @db.Uuid
+  title        String       @db.VarChar(160)
+  description  String?      @db.VarChar(1000)
+  kind         FileKind     @default(MATERIAL)
+  originalName String       @map("original_name") @db.VarChar(255)
+  storageKey   String       @unique @map("storage_key") @db.VarChar(100)
+  mimeType     String       @map("mime_type") @db.VarChar(100)
+  sizeBytes    Int          @map("size_bytes")
+  dueAt        DateTime?    @map("due_at")
+  classId      String?      @map("class_id") @db.Uuid
+  sectionId    String?      @map("section_id") @db.Uuid
+  uploaderId   String       @map("uploader_id") @db.Uuid
+  schoolClass  SchoolClass? @relation(fields: [classId], references: [id], onDelete: SetNull)
+  section      Section?     @relation(fields: [sectionId], references: [id], onDelete: SetNull)
+  uploader     User         @relation("FileUploader", fields: [uploaderId], references: [id], onDelete: Cascade)
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
+
+  @@index([kind, classId, sectionId, createdAt])
+  @@map("learning_files")
+}

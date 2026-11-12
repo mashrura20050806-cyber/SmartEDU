@@ -1,0 +1,23 @@
+{
+  "name": "smartedu",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n server,client -c green,blue \"npm:dev --prefix server\" \"npm:dev --prefix client\"",
+    "build": "npm run build --prefix client",
+    "lint": "npm run lint --prefix server && npm run lint --prefix client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "allowScripts": {
+    "prisma@6.19.3": true,
+    "@prisma/client@6.19.3": true,
+    "@prisma/engines@6.19.3": true,
+    "esbuild@0.25.12": true
+  }
+}
