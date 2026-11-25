@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Notices - SmartEdu</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header" id="site-header"></header>
+
+  <main class="page">
+    <h1>Notices</h1>
+    <p class="lead">Post notices for students and review what has been posted.</p>
+
+    <section class="page-section" aria-labelledby="new-heading">
+      <h2 id="new-heading">Create notice</h2>
+      <p id="approval-hint" class="hint"></p>
+      <div id="notice-alert" role="status" hidden></div>
+
+      <form id="notice-form" novalidate>
+        <div class="field">
+          <label for="title">Title</label>
+          <input id="title" type="text" maxlength="100" autocomplete="off">
+          <span class="field-error" id="title-error" aria-live="polite"></span>
+        </div>
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" maxlength="1000"></textarea>
+          <span class="field-error" id="message-error" aria-live="polite"></span>
+        </div>
+        <div class="field">
+          <label for="audience">Who should see this notice</label>
+          <select id="audience">
+            <option value="all">Everyone</option>
+            <option value="class">A whole class</option>
+            <option value="section">One section</option>
+          </select>
+        </div>
+        <div class="field" id="class-field" hidden>
+          <label for="class">Class</label>
+          <select id="class"></select>
+          <span class="field-error" id="class-error" aria-live="polite"></span>
+        </div>
+        <div class="field" id="section-field" hidden>
+          <label for="section">Section</label>
+          <select id="section"></select>
+          <span class="field-error" id="section-error" aria-live="polite"></span>
+        </div>
+        <div class="form-actions"><button type="submit">Post notice</button></div>
+      </form>
+    </section>
+
+    <section class="page-section" aria-labelledby="list-heading">
+      <h2 id="list-heading">All notices</h2>
+      <div id="list-alert" role="status" hidden></div>
+      <div class="toolbar">
+        <div class="field">
+          <label for="status-filter">Show status</label>
+          <select id="status-filter">
+            <option value="">All notices</option>
+            <option value="pending">Pending approval</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+      </div>
+      <div id="notice-list"></div>
+      <p class="empty" id="notice-empty" hidden>No notices match this filter. Post a notice above or choose All notices.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="footer-inner"><p>SmartEdu school management. Sprint 1 build.</p></div></footer>
+  <script src="js/data.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/notices.js"></script>
+</body>
+</html>
